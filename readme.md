@@ -1,4 +1,4 @@
-Chat Program
+Chat Server
 ======
 This simple chat program was created as an experiment in Python 2.7 to try multithreading. 
 
@@ -9,12 +9,12 @@ Usage
 
 Example Output:
 -------
->Username: User1
->Welcome: 'User1' type '!q' to quit
->[13:19:00]User2: Connected
->[13:19:01]User2: Hello
->Hi
->[13:19:07]User2: How's it going?
->Good
->!q
->You have Left Chat
+>Username: User1<br>
+>Welcome: 'User1' type '!q' to quit<br>
+>[13:19:00]User2: Connected<br>
+>[13:19:01]User2: Hello<br>
+>Hi<br>
+>[13:19:07]User2: How's it going?<br>
+>Good<br>
+>!q<br>
+>You have Left Chat<br>
