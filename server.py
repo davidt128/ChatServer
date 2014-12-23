@@ -1,45 +1,48 @@
 #server.py
-#December
+#December 2014
+
 import socket
-import time
 import datetime
 
-
 #Server's connection Information
-HOST = ''
-PORT = 40007
+HOST = '127.0.0.1'
+PORT = 50001
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.bind((HOST, PORT))
-clientList = {}     # Empty Client
+clientList = {}
 
-def addTime(type,src,msg):
-    time = datetime.datetime.strftime(datetime.datetime.now(),"%H:%M:%S")
-    frame = type+"#"+src+"#"+time+"#"+msg
+#Used to add timestamps when sending to clients
+def addTime(fType, src, msg):
+    time = datetime.datetime.strftime(datetime.datetime.now(), "%H:%M:%S")
+    frame = fType + "!#" + src + "!#" + time + "!#" + msg
     return frame
 
-def broadcast(type,src,msg):
+#Broadcast Messages to all clients, that aren't current user
+def broadcast(fType, src, msg):
     for i in clientList:
         if clientList[i] != clientList[src]:
-            s.sendto(addTime(type,src,msg).encode(), tuple(clientList[i]))
-        print ("Broadcasting: " + frame)
+            s.sendto(addTime(fType, src, msg).encode(), tuple(clientList[i]))
+    print ("Broadcasting: " + frame)
 
-while (1):
+while 1:
     data, addr = s.recvfrom(100)
     frame = data.decode()
-    type = frame.split('#')[0]
-    src = frame.split("#")[1]
-    msg = frame.split("#")[2]
+    fType = frame.split('!#')[0]
+    src = frame.split("!#")[1]
+    msg = frame.split("!#")[2]
 
-    if type == "MSG":
-        broadcast(type,src,msg)
-    elif type == "QUIT":
-        print "User: " + src+ " has left chat."
-        broadcast(type,src,"has left chat")
-    elif type == "INITIAL":
+    if fType == "MSG":
+        broadcast(fType, src, msg)
+    elif fType == "QUIT":
+        print "User: " + src + " has left chat."
+        broadcast(fType, src, "has left chat")
+
+    #Add Clients to list
+    elif fType == "INITIAL":
         if src in clientList.keys():
             print (">"+src + ": updated " + str(clientList[src]))
-        elif src not in clientList.keys() :
-            clientList[src] = (addr)
+        elif src not in clientList.keys():
+            clientList[src] = addr
             print (">Client " + src + ": connected")
             msg = "Connected"
-            broadcast(type,src,msg)
+            broadcast(fType, src, msg)
