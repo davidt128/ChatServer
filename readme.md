@@ -1,6 +1,6 @@
-Chat Server
+Python Chat Server
 ======
-This simple chat program was created as an experiment in Python 2.7 to try multithreading. 
+A simple chat program to learn Python.
 
 
 Usage
